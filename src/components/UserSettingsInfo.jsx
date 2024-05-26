@@ -51,19 +51,17 @@ const UserSettingsInfo = () => {
                 <Languages />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="-translate-y-6">
-              Place content for the popover here.
-            </PopoverContent>
+            <PopoverContent sideOffset={12}>Place content for the popover here.</PopoverContent>
           </Popover>
 
           <TooltipProvider>
-            <Tooltip>
+            <Tooltip delayDuration={500}>
               <TooltipTrigger>
                 <Button variant="outline" className="p-2 h-auto w-auto" onClick={handleLogout}>
                   <LogOut />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent className="-translate-y-1">
+              <TooltipContent sideOffset={6}>
                 <p>Log out</p>
               </TooltipContent>
             </Tooltip>

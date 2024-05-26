@@ -15,9 +15,6 @@ const UserCard = ({ userInfo }) => {
   };
 
   const usernameArr = userInfo.username.split(" ");
-  console.log("usernameArr");
-  console.log(usernameArr);
-  console.log(usernameArr.length);
 
   return (
     <li

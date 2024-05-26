@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { addDoc, collection, limit, orderBy, query } from "firebase/firestore";
@@ -8,11 +8,13 @@ import { auth, firestore } from "../lib/firebase";
 
 import ChatMessage from "./ChatMessage";
 import { Input } from "./ui/input";
-import { Send } from "lucide-react";
+import { Save, Send } from "lucide-react";
 import EmptyMessageContainer from "./EmptyMessageContainer";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Separator } from "./ui/separator";
 
 const Chat = () => {
-  const dummy = useRef();
+  const scrollToContainer = useRef();
   const params = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -26,6 +28,15 @@ const Chat = () => {
   const secondUserQuery = query(secondMessagesRef, orderBy("createdAt"), limit(25));
   const [secondMessages] = useCollectionData(secondUserQuery, { idField: "id" });
 
+  const usersRef = collection(firestore, "users");
+  const userCollectionQuery = query(usersRef);
+  const [userList] = useCollectionData(userCollectionQuery, { idField: "id" });
+
+  const currentChatUser = userList?.find((user) => user.email === params.uid);
+  const usernameArr = currentChatUser ? currentChatUser?.username.split(" ") : null;
+
+  const isSavedMessages = currentChatUser?.email === user.email;
+
   const collectionExists = () => {
     if (messages?.length) {
       if (collectionName.includes("undefined")) {
@@ -38,6 +49,12 @@ const Chat = () => {
     }
     return true;
   };
+
+  useEffect(() => {
+    if ((messages || secondMessages) && collectionExists()) {
+      scrollToContainer.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, secondMessages]);
 
   const [formValue, setFormValue] = useState("");
 
@@ -59,31 +76,58 @@ const Chat = () => {
     });
 
     setFormValue("");
-    dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
       <section className="w-full h-full relative">
-        <main className="h-[calc(100%-5rem)] overflow-auto py-4 px-3">
+        {collectionExists() && (
+          <div className="flex items-center gap-3 py-4 px-3">
+            <Avatar>
+              <AvatarImage src={"https://api.adorable.io/avatars/23/abott@adorable.png"} />
+              <AvatarFallback>
+                {!isSavedMessages &&
+                  usernameArr?.length >= 2 &&
+                  String(usernameArr[0][0] + usernameArr[1][0])}
+                {!isSavedMessages && usernameArr?.length < 2 && String(usernameArr[0][0])}
+                {isSavedMessages && <Save />}
+              </AvatarFallback>
+            </Avatar>
+            <p>
+              {!isSavedMessages && currentChatUser?.username}
+              {isSavedMessages && "Saved messages"}
+            </p>
+          </div>
+        )}
+
+        <Separator />
+        <main
+          className={`${
+            collectionExists() ? "h-[calc(100%-9.5rem)]" : "h-[calc(100%-5rem)]"
+          } overflow-auto py-4 px-3`}
+        >
           {!!messages?.length &&
             collectionExists() &&
-            messages?.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+            messages?.map((msg, index) => <ChatMessage key={index} message={msg} />)}
           {!messages?.length &&
             !!secondMessages?.length &&
             collectionExists() &&
-            secondMessages?.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+            secondMessages?.map((msg, index) => <ChatMessage key={index} message={msg} />)}
           {!collectionExists() && (
             <EmptyMessageContainer
               className={"w-full h-full flex justify-center items-center"}
               noChat
             />
           )}
-          {!!messages && !!secondMessages && !messages?.length && !secondMessages?.length && (
-            <EmptyMessageContainer className={"w-full h-full flex justify-center items-center"} />
-          )}
+          {collectionExists() &&
+            !!messages &&
+            !!secondMessages &&
+            !messages?.length &&
+            !secondMessages?.length && (
+              <EmptyMessageContainer className={"w-full h-full flex justify-center items-center"} />
+            )}
 
-          <span ref={dummy}></span>
+          <span ref={scrollToContainer}></span>
         </main>
 
         <form
