@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, firestore } from "../lib/firebase";
+import { auth } from "../lib/firebase";
 
 import {
   Card,
@@ -25,29 +25,17 @@ import { InputPassword } from "@/components/ui/input-password";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "@/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addDoc, collection, query } from "firebase/firestore";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const usersRef = collection(firestore, "users");
-  const userQuery = query(usersRef); // Use the new query() function
-
   const handleSubmit = async (data) => {
     try {
-      console.log(data);
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       console.log(userCredential);
       const user = userCredential.user;
       localStorage.setItem("token", user.accessToken);
       localStorage.setItem("user", JSON.stringify(user));
-
-      // await addDoc(usersRef, {
-      //   uid: user.uid,
-      //   email: user.email,
-      //   photoURL: user.photoURL,
-      //   createdAt: new Date(),
-      // });
 
       navigate("/");
     } catch (error) {

@@ -1,8 +1,7 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Chat from "./components/Chat";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { ModeToggle } from "./components/ModeToggle";
 import Home from "./pages/Home";
@@ -17,8 +16,9 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="/" element={<ProtectedRoute />}>
             <Route index element={<Home />} />
-            <Route path="/:uid" element={<Home />} />
+            <Route path="/chat/:uid" element={<Home />} />
           </Route>
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
     </ThemeProvider>

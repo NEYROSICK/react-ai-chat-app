@@ -5,7 +5,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 const Home = () => {
   return (
     <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={25}>
+      <ResizablePanel defaultSize={25} minSize={10} className="w-52">
         <Sidebar />
       </ResizablePanel>
       <ResizableHandle />

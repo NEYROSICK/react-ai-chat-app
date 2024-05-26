@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, firestore } from "../lib/firebase";
 
 import {
   Card,
@@ -25,17 +25,37 @@ import { InputPassword } from "@/components/ui/input-password";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "@/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { addDoc, collection } from "firebase/firestore";
 
 const Signup = () => {
   const navigate = useNavigate();
 
+  const usersRef = collection(firestore, "users");
+
+  const addUserToCollection = async (user) => {
+    await addDoc(usersRef, {
+      uid: user.uid,
+      username: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      createdAt: new Date(),
+    });
+  };
+
   const handleSubmit = async (data) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      console.log(userCredential);
       const user = userCredential.user;
+      await updateProfile(user, {
+        displayName: data.username,
+      });
       localStorage.setItem("token", user.accessToken);
       localStorage.setItem("user", JSON.stringify(user));
+      await addUserToCollection(user);
+
+      console.log("user");
+      console.log(user);
+
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -45,6 +65,7 @@ const Signup = () => {
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
@@ -62,12 +83,25 @@ const Signup = () => {
             <form onSubmit={form.handleSubmit(handleSubmit)}>
               <FormField
                 control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem className="mb-3">
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="mb-3">
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" {...field} />
+                      <Input type="email" placeholder="Email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -77,7 +111,7 @@ const Signup = () => {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem className=" mt-3">
+                  <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <InputPassword placeholder="Password" {...field} />

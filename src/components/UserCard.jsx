@@ -1,28 +1,57 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Toggle } from "@/components/ui/toggle";
-import { useNavigate } from "react-router-dom";
+import { Save } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const UserCard = ({ userInfo }) => {
   const navigate = useNavigate();
+  const params = useParams();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const isActive = userInfo.email === params.uid;
+  const isSavedMessages = userInfo.email === user.email;
 
   const handleClick = () => {
-    navigate(`/${userInfo.email}`);
+    navigate(`/chat/${userInfo.email}`);
   };
 
+  const usernameArr = userInfo.username.split(" ");
+  console.log("usernameArr");
+  console.log(usernameArr);
+  console.log(usernameArr.length);
+
   return (
-    <li className="flex items-center gap-3">
-      <Toggle
-        className="w-full flex justify-start gap-3 py-8 border-primary-foreground"
-        onClick={handleClick}
-      >
-        <Avatar>
-          <AvatarImage src={"https://api.adorable.io/avatars/23/abott@adorable.png"} />
-          <AvatarFallback>
-            {String(userInfo.email[0] + userInfo.email[1]).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-        <p>{userInfo.email}</p>
-      </Toggle>
+    <li
+      className={`flex items-center gap-3 py-4 px-4 rounded-xl border-primary-foreground cursor-pointer ${
+        isActive ? "bg-primary" : "hover:bg-secondary transition-colors"
+      }`}
+      onClick={handleClick}
+    >
+      {isSavedMessages ? (
+        <>
+          <Avatar>
+            <AvatarImage src={"https://api.adorable.io/avatars/23/abott@adorable.png"} />
+            <AvatarFallback>
+              <Save />
+            </AvatarFallback>
+          </Avatar>
+          <p>Saved messages</p>
+        </>
+      ) : (
+        <>
+          <Avatar>
+            <AvatarImage src={"https://api.adorable.io/avatars/23/abott@adorable.png"} />
+            <AvatarFallback>
+              {usernameArr.length >= 2
+                ? String(usernameArr[0][0] + usernameArr[1][0])
+                : String(usernameArr[0][0])}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <p>{userInfo?.username}</p>
+            <p className="text-sm text-muted-foreground">{userInfo?.email}</p>
+          </div>
+        </>
+      )}
     </li>
   );
 };
