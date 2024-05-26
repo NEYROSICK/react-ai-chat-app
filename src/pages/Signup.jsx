@@ -26,9 +26,12 @@ import { useForm } from "react-hook-form";
 import { registerSchema } from "@/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDoc, collection } from "firebase/firestore";
+import LanguagesSwitch from "@/components/LanguagesSwitch";
+import { useTranslation } from "react-i18next";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const usersRef = collection(firestore, "users");
 
@@ -73,10 +76,11 @@ const Signup = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
+      <LanguagesSwitch className="absolute bottom-6 right-6" />
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle className="text-center text-3xl">Register</CardTitle>
-          <CardDescription className="text-center">Register your new account.</CardDescription>
+          <CardTitle className="text-center text-3xl">{t("registerTitle")}</CardTitle>
+          <CardDescription className="text-center">{t("registerSubtitle")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -86,9 +90,9 @@ const Signup = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem className="mb-3">
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>{t("usernameField")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Username" {...field} />
+                      <Input placeholder={t("usernameField")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,9 +103,9 @@ const Signup = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="mb-3">
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("emailField")}</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Email" {...field} />
+                      <Input type="email" placeholder={t("emailField")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -112,25 +116,25 @@ const Signup = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("passwordField")}</FormLabel>
                     <FormControl>
-                      <InputPassword placeholder="Password" {...field} />
+                      <InputPassword placeholder={t("passwordField")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <Button className="w-full mt-6" type="submit">
-                Register
+                {t("registerSubmitButton")}
               </Button>
             </form>
           </Form>
         </CardContent>
         <CardFooter className="block">
           <CardDescription className="text-center">
-            Need to Login?{" "}
+            {t("navigateToLoginTitle")}{" "}
             <Link to="/login" className="text-white font-semibold hover:underline">
-              Login
+              {t("navigateToLoginUrl")}
             </Link>
           </CardDescription>
         </CardFooter>

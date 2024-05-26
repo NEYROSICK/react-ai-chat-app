@@ -7,10 +7,13 @@ import { Card } from "./ui/card";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useNavigate } from "react-router-dom";
+import LanguagesSwitch from "./LanguagesSwitch";
+import { useTranslation } from "react-i18next";
 
 const UserSettingsInfo = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const usernameArr = user.displayName.split(" ");
 
   const handleLogout = async () => {
@@ -51,7 +54,9 @@ const UserSettingsInfo = () => {
                 <Languages />
               </Button>
             </PopoverTrigger>
-            <PopoverContent sideOffset={12}>Place content for the popover here.</PopoverContent>
+            <PopoverContent sideOffset={26} className="w-auto rounded-xl">
+              <LanguagesSwitch />
+            </PopoverContent>
           </Popover>
 
           <TooltipProvider>
@@ -62,7 +67,7 @@ const UserSettingsInfo = () => {
                 </Button>
               </TooltipTrigger>
               <TooltipContent sideOffset={6}>
-                <p>Log out</p>
+                <p>{t("logoutTitle")}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

@@ -5,8 +5,11 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { ModeToggle } from "./components/ModeToggle";
 import Home from "./pages/Home";
+import initLocalization from "./i18n";
 
 function App() {
+  initLocalization();
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <ModeToggle className="absolute top-6 right-6" />

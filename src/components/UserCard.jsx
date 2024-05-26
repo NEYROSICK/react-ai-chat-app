@@ -1,9 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Save } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 const UserCard = ({ userInfo }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const params = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -31,7 +33,7 @@ const UserCard = ({ userInfo }) => {
               <Save />
             </AvatarFallback>
           </Avatar>
-          <p>Saved messages</p>
+          <p>{t("savedMessagesTitle")}</p>
         </>
       ) : (
         <>

@@ -25,9 +25,12 @@ import { InputPassword } from "@/components/ui/input-password";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "@/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import LanguagesSwitch from "@/components/LanguagesSwitch";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (data) => {
     try {
@@ -53,12 +56,11 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
+      <LanguagesSwitch className="absolute bottom-6 right-6" />
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle className="text-center text-3xl">Login</CardTitle>
-          <CardDescription className="text-center">
-            Sign in to your existing account.
-          </CardDescription>
+          <CardTitle className="text-center text-3xl">{t("loginTitle")}</CardTitle>
+          <CardDescription className="text-center">{t("loginSubtitle")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -68,9 +70,9 @@ const Login = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("emailField")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" {...field} />
+                      <Input placeholder={t("emailField")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -81,25 +83,25 @@ const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className=" mt-3">
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("passwordField")}</FormLabel>
                     <FormControl>
-                      <InputPassword placeholder="Password" {...field} />
+                      <InputPassword placeholder={t("passwordField")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <Button className="w-full mt-6" type="submit">
-                Sign in
+                {t("loginSubmitButton")}
               </Button>
             </form>
           </Form>
         </CardContent>
         <CardFooter className="block">
           <CardDescription className="text-center">
-            Need to Signup?{" "}
+            {t("navigateToRegisterTitle")}{" "}
             <Link to="/signup" className="text-white font-semibold hover:underline">
-              Create Account
+              {t("navigateToRegisterUrl")}
             </Link>
           </CardDescription>
         </CardFooter>

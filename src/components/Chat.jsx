@@ -12,11 +12,14 @@ import { Save, Send } from "lucide-react";
 import EmptyMessageContainer from "./EmptyMessageContainer";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
+import { useTranslation } from "react-i18next";
 
 const Chat = () => {
   const scrollToContainer = useRef();
+  const { t } = useTranslation();
   const params = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
+  const [scrollToSmooth, setScroolToSmooth] = useState(false);
 
   const collectionName = `${user.email}${params.uid}`;
   const messagesRef = collection(firestore, collectionName);
@@ -34,7 +37,6 @@ const Chat = () => {
 
   const currentChatUser = userList?.find((user) => user.email === params.uid);
   const usernameArr = currentChatUser ? currentChatUser?.username.split(" ") : null;
-
   const isSavedMessages = currentChatUser?.email === user.email;
 
   const collectionExists = () => {
@@ -52,8 +54,16 @@ const Chat = () => {
 
   useEffect(() => {
     if ((messages || secondMessages) && collectionExists()) {
-      scrollToContainer.current.scrollIntoView({ behavior: "smooth" });
+      if (!scrollToSmooth) {
+        scrollToContainer.current.scrollIntoView();
+        setScroolToSmooth(true);
+      } else {
+        scrollToContainer.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
+    return () => {
+      setScroolToSmooth(false);
+    };
   }, [messages, secondMessages]);
 
   const [formValue, setFormValue] = useState("");
@@ -95,7 +105,7 @@ const Chat = () => {
             </Avatar>
             <p>
               {!isSavedMessages && currentChatUser?.username}
-              {isSavedMessages && "Saved messages"}
+              {isSavedMessages && t("savedMessagesTitle")}
             </p>
           </div>
         )}
