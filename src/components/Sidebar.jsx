@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <div className="h-full flex flex-col justify-between items-start">
-      <ul className="flex flex-col gap-4 py-4 px-3 w-full">
+      <ul className="flex flex-col gap-4 py-4 px-3 w-full h-[calc(100%-5rem)] overflow-auto">
         {userList && chatList.map((user) => <UserCard key={user.uid} userInfo={user} />)}
       </ul>
       <UserSettingsInfo />
