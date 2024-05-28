@@ -24,6 +24,7 @@ export const uk = {
 
     // Головний додаток
     savedMessagesTitle: "Збережене",
+    aiAssistantTitle: "AI Асистент",
 
     noChatTitle: "Виберіть чат ;)",
     noChatContent:
@@ -31,5 +32,13 @@ export const uk = {
 
     noMessagesTitle: "Ще немає повідомлень...",
     noMessagesContent: "Спочатку надішліть повідомлення, щоб розпочати чат",
+
+    chatPlaceholder: "Написати повідомлення...",
+    AIchatPlaceholder: "Надіслати запит до ШІ...",
+
+    //Теми
+    lightTheme: "Світла",
+    darkTheme: "Темна",
+    systemTheme: "Системна",
   },
 };

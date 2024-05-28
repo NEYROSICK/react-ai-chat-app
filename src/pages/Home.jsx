@@ -1,3 +1,4 @@
+import AIChat from "@/components/AIChat";
 import Chat from "@/components/Chat";
 import Sidebar from "@/components/Sidebar";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
@@ -5,15 +6,17 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 const Home = () => {
   return (
     <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={25} minSize={22} className="w-52">
+      <ResizablePanel defaultSize={25} minSize={22}>
         <Sidebar />
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel defaultSize={50}>
-        <Chat className="overflow-auto" />
+        <Chat />
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel defaultSize={25}>AI</ResizablePanel>
+      <ResizablePanel defaultSize={25}>
+        <AIChat />
+      </ResizablePanel>
     </ResizablePanelGroup>
   );
 };

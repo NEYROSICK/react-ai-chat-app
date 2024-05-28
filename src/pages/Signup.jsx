@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { addDoc, collection } from "firebase/firestore";
 import LanguagesSwitch from "@/components/LanguagesSwitch";
 import { useTranslation } from "react-i18next";
+import { ModeToggle } from "@/components/ModeToggle";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -56,9 +57,6 @@ const Signup = () => {
       localStorage.setItem("user", JSON.stringify(user));
       await addUserToCollection(user);
 
-      console.log("user");
-      console.log(user);
-
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -76,6 +74,7 @@ const Signup = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
+      <ModeToggle className="absolute top-6 right-6" />
       <LanguagesSwitch className="absolute bottom-6 right-6" />
       <Card className="w-[350px]">
         <CardHeader>

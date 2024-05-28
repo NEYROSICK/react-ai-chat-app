@@ -1,5 +1,4 @@
 import { Languages, LogOut } from "lucide-react";
-import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -49,10 +48,13 @@ const UserSettingsInfo = () => {
         </div>
         <div className="flex gap-3 items-center">
           <Popover>
-            <PopoverTrigger>
-              <Button variant="outline" className="p-2 h-auto w-auto">
+            <PopoverTrigger variant="outline">
+              <Card
+                variant="outline"
+                className="p-2 h-auto w-auto hover:bg-accent transition-colors"
+              >
                 <Languages />
-              </Button>
+              </Card>
             </PopoverTrigger>
             <PopoverContent sideOffset={26} className="w-auto rounded-xl">
               <LanguagesSwitch />
@@ -61,10 +63,13 @@ const UserSettingsInfo = () => {
 
           <TooltipProvider>
             <Tooltip delayDuration={500}>
-              <TooltipTrigger>
-                <Button variant="outline" className="p-2 h-auto w-auto" onClick={handleLogout}>
+              <TooltipTrigger onClick={handleLogout}>
+                <Card
+                  variant="outline"
+                  className="p-2 h-auto w-auto hover:bg-accent transition-colors"
+                >
                   <LogOut />
-                </Button>
+                </Card>
               </TooltipTrigger>
               <TooltipContent sideOffset={6}>
                 <p>{t("logoutTitle")}</p>

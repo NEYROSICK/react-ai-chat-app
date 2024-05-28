@@ -11,8 +11,10 @@ import { Input } from "./ui/input";
 import { Save, Send } from "lucide-react";
 import EmptyMessageContainer from "./EmptyMessageContainer";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Separator } from "./ui/separator";
 import { useTranslation } from "react-i18next";
+import { ModeToggle } from "./ModeToggle";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
 
 const Chat = () => {
   const scrollToContainer = useRef();
@@ -91,8 +93,11 @@ const Chat = () => {
   return (
     <>
       <section className="w-full h-full relative">
-        {collectionExists() && (
-          <div className="flex items-center gap-3 py-4 px-3">
+        <ModeToggle className="absolute top-8 right-7" />
+
+        {/* {collectionExists() && ( */}
+        <div className="py-4 px-3">
+          <Card className="flex items-center gap-3 py-4 px-4">
             <Avatar>
               <AvatarImage src={"https://api.adorable.io/avatars/23/abott@adorable.png"} />
               <AvatarFallback>
@@ -101,21 +106,18 @@ const Chat = () => {
                   String(usernameArr[0][0] + usernameArr[1][0])}
                 {!isSavedMessages && usernameArr?.length < 2 && String(usernameArr[0][0])}
                 {isSavedMessages && <Save />}
+                {!collectionExists() && "?"}
               </AvatarFallback>
             </Avatar>
             <p>
               {!isSavedMessages && currentChatUser?.username}
               {isSavedMessages && t("savedMessagesTitle")}
             </p>
-          </div>
-        )}
+          </Card>
+        </div>
+        {/* )} */}
 
-        <Separator />
-        <main
-          className={`${
-            collectionExists() ? "h-[calc(100%-9.5rem)]" : "h-[calc(100%-5rem)]"
-          } overflow-auto py-4 px-3`}
-        >
+        <main className={`h-[calc(100%-11.7rem)] overflow-auto py-4 px-3`}>
           {!!messages?.length &&
             collectionExists() &&
             messages?.map((msg, index) => <ChatMessage key={index} message={msg} />)}
@@ -147,17 +149,14 @@ const Chat = () => {
           <Input
             value={formValue}
             onChange={(e) => setFormValue(e.target.value)}
-            placeholder="Say something nice..."
+            placeholder={t("chatPlaceholder")}
             className="chat-input rounded-xl py-6 px-4"
+            autocomplete="off"
           />
 
-          <button
-            className="chat-button min-h-12 min-w-12 bg-primary rounded-xl flex justify-center items-center cursor-pointer"
-            type="submit"
-            disabled={!formValue}
-          >
-            <Send className="stroke-primary-foreground h-5 w-5" />
-          </button>
+          <Button className="chat-button h-auto rounded-xl p-3" type="submit" disabled={!formValue}>
+            <Send className="stroke-primary-foreground" />
+          </Button>
         </form>
       </section>
     </>

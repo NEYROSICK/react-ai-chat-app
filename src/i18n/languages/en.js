@@ -24,11 +24,20 @@ export const en = {
 
     // Main App
     savedMessagesTitle: "Saved",
+    aiAssistantTitle: "AI Assistant",
 
     noChatTitle: "Choose some chat ;)",
     noChatContent: "To start messaging with someone please choose chat on the left sidebar",
 
     noMessagesTitle: "There are no messages yet...",
     noMessagesContent: "Send the message first, to start chat",
+
+    chatPlaceholder: "Send message...",
+    AIchatPlaceholder: "Send request to AI...",
+
+    //Themes
+    lightTheme: "Light",
+    darkTheme: "Dark",
+    systemTheme: "System",
   },
 };

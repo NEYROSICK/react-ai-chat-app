@@ -27,6 +27,7 @@ import { loginSchema } from "@/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LanguagesSwitch from "@/components/LanguagesSwitch";
 import { useTranslation } from "react-i18next";
+import { ModeToggle } from "@/components/ModeToggle";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
+      <ModeToggle className="absolute top-6 right-6" />
       <LanguagesSwitch className="absolute bottom-6 right-6" />
       <Card className="w-[350px]">
         <CardHeader>
