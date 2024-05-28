@@ -40,20 +40,16 @@ const AIChat = () => {
 
   const updateAllDocuments = async () => {
     try {
-      // Query all documents in the collection
       const q = query(messagesRef);
       const querySnapshot = await getDocs(q);
 
-      // Loop through each document and update it
       const batch = writeBatch(firestore);
       querySnapshot.forEach((docSnapshot) => {
         const docRef = doc(firestore, collectionName, docSnapshot.id);
         batch.update(docRef, { noAnim: true });
       });
 
-      // Commit the batch
       await batch.commit();
-      console.log("All documents updated successfully");
     } catch (error) {
       console.error("Error updating documents: ", error);
     }
@@ -71,8 +67,6 @@ const AIChat = () => {
       role,
       createdAt: new Date(),
     });
-
-    // await updateAllDocuments();
   };
 
   const handleSubmit = async (e) => {
