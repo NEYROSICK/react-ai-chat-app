@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { addDoc, collection, limit, orderBy, query } from "firebase/firestore";
-import { updateProfile } from "firebase/auth";
+// import { updateProfile } from "firebase/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../lib/firebase";
 
@@ -74,10 +74,6 @@ const Chat = () => {
     e.preventDefault();
 
     const { uid, photoURL, displayName } = auth.currentUser;
-
-    await updateProfile(auth.currentUser, {
-      photoURL: "https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png",
-    });
 
     await addDoc(messages?.length ? messagesRef : secondMessagesRef, {
       text: formValue,
@@ -151,7 +147,7 @@ const Chat = () => {
             onChange={(e) => setFormValue(e.target.value)}
             placeholder={t("chatPlaceholder")}
             className="chat-input rounded-xl py-6 px-4"
-            autocomplete="off"
+            autoComplete="off"
           />
 
           <Button className="chat-button h-auto rounded-xl p-3" type="submit" disabled={!formValue}>

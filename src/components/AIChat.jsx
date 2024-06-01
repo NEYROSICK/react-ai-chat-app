@@ -137,7 +137,7 @@ const AIChat = () => {
           className="flex items-center justify-between gap-3 py-4 px-4 rounded-xl w-full h-auto"
         >
           <form ref={formRef} className="flex gap-3 items-center w-full" onSubmit={handleSubmit}>
-            <Input name="message" placeholder={t("AIchatPlaceholder")} autocomplete="off" />
+            <Input name="message" placeholder={t("AIchatPlaceholder")} autoComplete="off" />
 
             <Button variant="outline" className="p-2 h-auto w-auto">
               <Send />
