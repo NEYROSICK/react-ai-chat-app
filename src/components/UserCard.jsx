@@ -33,7 +33,9 @@ const UserCard = ({ userInfo }) => {
               <Save />
             </AvatarFallback>
           </Avatar>
-          <p>{t("savedMessagesTitle")}</p>
+          <p className={`${isActive ? "text-primary-foreground" : ""}`}>
+            {t("savedMessagesTitle")}
+          </p>
         </>
       ) : (
         <>
@@ -46,8 +48,14 @@ const UserCard = ({ userInfo }) => {
             </AvatarFallback>
           </Avatar>
           <div>
-            <p>{userInfo?.username}</p>
-            <p className="text-sm text-muted-foreground">{userInfo?.email}</p>
+            <p className={`${isActive ? "text-primary-foreground" : ""}`}>{userInfo?.username}</p>
+            <p
+              className={`${
+                isActive ? "text-primary-foreground" : "text-muted-foreground"
+              } text-sm`}
+            >
+              {userInfo?.email}
+            </p>
           </div>
         </>
       )}

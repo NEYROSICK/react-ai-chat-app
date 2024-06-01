@@ -13,7 +13,7 @@ const UserSettingsInfo = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const usernameArr = user.displayName.split(" ");
+  const usernameArr = user.displayName?.split(" ");
 
   const handleLogout = async () => {
     try {
@@ -36,9 +36,9 @@ const UserSettingsInfo = () => {
           <Avatar>
             <AvatarImage src={"https://api.adorable.io/avatars/23/abott@adorable.png"} />
             <AvatarFallback>
-              {usernameArr.length >= 2
+              {usernameArr?.length >= 2
                 ? String(usernameArr[0][0] + usernameArr[1][0])
-                : String(usernameArr[0][0])}
+                : usernameArr && String(usernameArr[0][0])}
             </AvatarFallback>
           </Avatar>
           <div>

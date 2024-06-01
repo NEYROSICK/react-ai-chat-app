@@ -22,6 +22,7 @@ import {
 } from "firebase/firestore";
 import { firestore } from "@/lib/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Separator } from "./ui/separator";
 
 const AIChat = () => {
   const { t } = useTranslation();
@@ -40,20 +41,16 @@ const AIChat = () => {
 
   const updateAllDocuments = async () => {
     try {
-      // Query all documents in the collection
       const q = query(messagesRef);
       const querySnapshot = await getDocs(q);
 
-      // Loop through each document and update it
       const batch = writeBatch(firestore);
       querySnapshot.forEach((docSnapshot) => {
         const docRef = doc(firestore, collectionName, docSnapshot.id);
         batch.update(docRef, { noAnim: true });
       });
 
-      // Commit the batch
       await batch.commit();
-      console.log("All documents updated successfully");
     } catch (error) {
       console.error("Error updating documents: ", error);
     }
@@ -71,8 +68,6 @@ const AIChat = () => {
       role,
       createdAt: new Date(),
     });
-
-    // await updateAllDocuments();
   };
 
   const handleSubmit = async (e) => {
@@ -95,19 +90,22 @@ const AIChat = () => {
 
   return (
     <div className="h-full flex flex-col justify-between">
-      <div className="flex gap-3 py-6 px-3  items-center justify-center">
-        <Avatar>
-          <AvatarImage src={"https://api.adorable.io/avatars/23/abott@adorable.png"} />
-          <AvatarFallback className="bc-muted">
-            <OpenAILogo className="fill-primary-foreground w-6" />
-          </AvatarFallback>
-        </Avatar>
-        <p>{t("aiAssistantTitle")}</p>
+      <div className="px-3 ">
+        <div className="py-6 flex gap-3 items-center justify-center">
+          <Avatar>
+            <AvatarImage src={"https://api.adorable.io/avatars/23/abott@adorable.png"} />
+            <AvatarFallback className="bc-muted">
+              <OpenAILogo className="fill-secondary-foreground w-6" />
+            </AvatarFallback>
+          </Avatar>
+          <p>{t("aiAssistantTitle")}</p>
+        </div>
+        <Separator />
       </div>
 
       {!!messages?.length && (
         <div
-          className="flex flex-col gap-3 justify-start items-start h-[calc(100%-9rem)] overflow-auto pb-4 px-3"
+          className="flex flex-col gap-3 justify-start items-start h-[calc(100%-9rem)] overflow-auto py-4 px-3"
           ref={scrollContainerRef}
         >
           {messages.map((item, index) =>
