@@ -11,5 +11,5 @@ export default defineConfig({
       "@": path.resolve("./src"),
     },
   },
+  base: "/react-ai-chat-app/",
 });
-
